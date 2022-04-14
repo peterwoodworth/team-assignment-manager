@@ -1,0 +1,24 @@
+name: "Team Assignment Manager"
+description: "Automatically assign one member from a github team to issues"
+inputs:
+  github-token:
+    description: "Github token"
+    required: true
+  team:
+    description: "Team to get potential assignees from"
+    required: true
+  target:
+    description: "Whether to count `issues`, `pull_requests`, or `both` when determining current assignee count of open issues"
+    required: false
+    default: "both"
+
+
+outputs:
+  assignee:
+    description: "User who was assigned to issue"
+runs:
+  using: "node12"
+  main: "dist/index.js"
+branding:
+  icon: alert-circle
+  color: gray-dark

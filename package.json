@@ -1,0 +1,61 @@
+{
+  "name": "team-assignment-manager",
+  "version": "1.0.0",
+  "description": "Github Action built for automatically assigning one member from a github team to issues RR style",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build src/index.ts -o dist --license LICENSE.md",
+    "test": "jest",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "posttest": "npm run lint"
+  },
+  "jest": {
+    "displayName": "Unit Tests",
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/*.test.ts",
+      "!**/node_modules/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 90,
+        "lines": 80,
+        "statements": 70
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peterwoodworth/team-assignment-manager.git"
+  },
+  "author": {
+    "name": "Peter Woodworth"
+  },
+  "contributors": [
+    {
+      "name": "Peter Woodworth",
+      "url": "https://github.com/peterwoodworth"
+    }
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@vercel/ncc": "^0.31.1",
+    "jest": "^27.4.3",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4",
+    "gts": "^3.1.0",
+    "@types/node": "^14.11.2"
+  }
+}
