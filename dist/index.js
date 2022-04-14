@@ -8345,7 +8345,7 @@ function run() {
         const team = core.getInput('team');
         const target = core.getInput('target');
         const octokit = github.getOctokit(token);
-        //   // get list of members on team
+        // get list of members on team
         const memberData = yield octokit.rest.teams.listMembersInOrg({
             org: github.context.repo.owner,
             team_slug: team,
@@ -8365,9 +8365,9 @@ function run() {
             }
             if (issue.assignees) {
                 for (const assignee of issue.assignees) {
-                    core.info(assignee.login);
-                    if (members.has(assignee.login)) {
-                        members[assignee.login]++;
+                    let val = members.get(assignee.login);
+                    if (val) {
+                        members.set(assignee.login, val++);
                     }
                 }
             }
@@ -8376,7 +8376,6 @@ function run() {
         let winner = '';
         let low;
         members.forEach((value, key) => {
-            core.info(key + value.toString());
             if (winner === '') {
                 low = value;
                 winner = key;
@@ -8388,7 +8387,6 @@ function run() {
                 }
             }
         });
-        core.info(winner);
         if (winner !== '') {
             core.setOutput('Assignee', winner);
             yield octokit.rest.issues.addAssignees({

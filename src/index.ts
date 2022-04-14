@@ -7,12 +7,12 @@ async function run() {
   const target = core.getInput('target');
   const octokit = github.getOctokit(token);
 
-//   // get list of members on team
+  // get list of members on team
   const memberData = await octokit.rest.teams.listMembersInOrg({
     org: github.context.repo.owner,
     team_slug: team,
   });
-  const members = new Map<string, Number>([]);
+  const members = new Map<string, number>([]);
   for (const member of memberData.data) {
     members.set(member.login, 0);
   }
@@ -28,9 +28,9 @@ async function run() {
     }
     if (issue.assignees) {
       for (const assignee of issue.assignees) {
-        core.info(assignee.login);
-        if (members.has(assignee.login)) {
-          members[assignee.login]++;
+        let val = members.get(assignee.login);
+        if (val) {
+          members.set(assignee.login, val++);
         }
       }
     }
@@ -38,9 +38,8 @@ async function run() {
 
   // determine team member with fewest assigned issues/PRs
   let winner = '';
-  let low: Number;
-  members.forEach((value: Number, key: string) => {
-    core.info(key + value.toString());
+  let low: number;
+  members.forEach((value: number, key: string) => {
     if (winner === '') {
       low = value;
       winner = key;
@@ -51,7 +50,6 @@ async function run() {
       }
     }
   });
-  core.info(winner);
 
   if (winner !== '') {
     core.setOutput('Assignee', winner);
