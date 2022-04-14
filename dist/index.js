@@ -8366,7 +8366,7 @@ function run() {
             if (issue.assignees) {
                 for (const assignee of issue.assignees) {
                     let val = members.get(assignee.login);
-                    if (val) {
+                    if (val !== undefined) {
                         members.set(assignee.login, val++);
                     }
                 }

@@ -7,7 +7,7 @@ async function run() {
   const target = core.getInput('target');
   const octokit = github.getOctokit(token);
 
-  // get list of members on team
+// get list of members on team
   const memberData = await octokit.rest.teams.listMembersInOrg({
     org: github.context.repo.owner,
     team_slug: team,
@@ -29,7 +29,7 @@ async function run() {
     if (issue.assignees) {
       for (const assignee of issue.assignees) {
         let val = members.get(assignee.login);
-        if (val) {
+        if (val !== undefined) {
           members.set(assignee.login, val++);
         }
       }
