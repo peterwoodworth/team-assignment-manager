@@ -8375,6 +8375,7 @@ function run() {
         let winner = '';
         let low;
         members.forEach((value, key) => {
+            core.info(key + value.toString());
             if (winner === '') {
                 low = value;
                 winner = key;

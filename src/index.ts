@@ -39,6 +39,7 @@ async function run() {
   let winner = '';
   let low: Number;
   members.forEach((value: Number, key: string) => {
+    core.info(key + value.toString());
     if (winner === '') {
       low = value;
       winner = key;
