@@ -17,7 +17,7 @@ async function run() {
     for (const coreMember of coreMemberData.data) {
       core.info(github.context.issue.owner);
       core.info(coreMember.login);
-      if (github.context.issue.owner === coreMember.login) {
+      if (github.context.actor === coreMember.login) {
         core.info('Issue was submitted by core team member. Exiting successfully.');
         return;
       }
