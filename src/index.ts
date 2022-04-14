@@ -4,10 +4,24 @@ import * as github from '@actions/github';
 async function run() {
   const token = core.getInput('github-token');
   const team = core.getInput('team');
+  const coreTeam = core.getInput('core-team', { required: false });
   const target = core.getInput('target');
   const octokit = github.getOctokit(token);
 
-// get list of members on team
+  // Check if issue was submitted by core team member
+  if (coreTeam) {
+    const coreMemberData = await octokit.rest.teams.listMembersInOrg({
+      org: github.context.repo.owner,
+      team_slug: coreTeam,
+    });
+    for (const coreMember of coreMemberData.data) {
+      if (github.context.issue.owner === coreMember.login) {
+        core.info('Issue was submitted by core team member. Exiting successfully.');
+      }
+    }
+  }
+
+  // get list of members on team
   const memberData = await octokit.rest.teams.listMembersInOrg({
     org: github.context.repo.owner,
     team_slug: team,

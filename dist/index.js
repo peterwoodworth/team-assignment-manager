@@ -8343,8 +8343,21 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         const token = core.getInput('github-token');
         const team = core.getInput('team');
+        const coreTeam = core.getInput('core-team', { required: false });
         const target = core.getInput('target');
         const octokit = github.getOctokit(token);
+        // Check if issue was submitted by core team member
+        if (coreTeam) {
+            const coreMemberData = yield octokit.rest.teams.listMembersInOrg({
+                org: github.context.repo.owner,
+                team_slug: coreTeam,
+            });
+            for (const coreMember of coreMemberData.data) {
+                if (github.context.issue.owner === coreMember.login) {
+                    core.info('Issue was submitted by core team member. Exiting successfully.');
+                }
+            }
+        }
         // get list of members on team
         const memberData = yield octokit.rest.teams.listMembersInOrg({
             org: github.context.repo.owner,
