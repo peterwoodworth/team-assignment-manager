@@ -8402,7 +8402,6 @@ function run() {
             }
         });
         if (winner !== '') {
-            core.setOutput('Assignee', winner);
             core.info("Assignee: " + winner);
             yield octokit.rest.issues.addAssignees({
                 owner: github.context.repo.owner,

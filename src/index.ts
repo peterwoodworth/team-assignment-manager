@@ -67,7 +67,6 @@ async function run() {
   });
 
   if (winner !== '') {
-    core.setOutput('Assignee', winner);
     core.info("Assignee: " + winner);
     await octokit.rest.issues.addAssignees({
       owner: github.context.repo.owner,

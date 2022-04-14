@@ -15,9 +15,6 @@ inputs:
     required: false
     default: "both"
 
-outputs:
-  assignee:
-    description: "User who was assigned to issue"
 runs:
   using: "node12"
   main: "dist/index.js"
