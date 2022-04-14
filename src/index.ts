@@ -7,15 +7,16 @@ async function run() {
   const target = core.getInput('target');
   const octokit = github.getOctokit(token);
 
-  // get list of members on team
-  const memberData = await octokit.rest.teams.listMembersInOrg({
-    org: github.context.repo.owner,
-    team_slug: team,
-  });
+//   // get list of members on team
+//   const memberData = await octokit.rest.teams.listMembersInOrg({
+//     org: github.context.repo.owner,
+//     team_slug: team,
+//   });
   const members = new Map<string, Number>([]);
-  for (const member of memberData.data) {
-    members.set(member.login, 0);
-  }
+//   for (const member of memberData.data) {
+//     members.set(member.login, 0);
+//   }
+  members.set('peterwoodworth', 0)
 
   // get number of issues/PRs assigned per team member
   const issueData = await octokit.rest.issues.list();

@@ -12,7 +12,6 @@ inputs:
     required: false
     default: "both"
 
-
 outputs:
   assignee:
     description: "User who was assigned to issue"
