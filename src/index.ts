@@ -29,9 +29,7 @@ async function run() {
     if (issue.assignees) {
       for (const assignee of issue.assignees) {
         let val = members.get(assignee.login);
-        core.info("VALUE IS: " + val);
         if (val !== undefined) {
-          core.info('WHAT THE FUCK HOLLY SHIT')
           members.set(assignee.login, ++val);
         }
       }
@@ -42,8 +40,6 @@ async function run() {
   let winner = '';
   let low: number;
   members.forEach((value: number, key: string) => {
-    core.info(key);
-    core.info(value.toString());
     if (winner === '') {
       low = value;
       winner = key;
@@ -57,6 +53,7 @@ async function run() {
 
   if (winner !== '') {
     core.setOutput('Assignee', winner);
+    core.info("Assignee: " + winner);
     await octokit.rest.issues.addAssignees({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
@@ -69,7 +66,6 @@ async function run() {
 function validateIssue(issue, target: string): boolean {
   // check issue state, issue must be 'open'
   if (issue.state !== 'open') {
-    core.info('issue closed. Skipping');
     return false;
   }
 
