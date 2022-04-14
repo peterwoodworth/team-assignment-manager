@@ -8365,7 +8365,7 @@ function run() {
             }
             if (issue.assignees) {
                 for (const assignee of issue.assignees) {
-                    if (members[assignee.login]) {
+                    if (members.has(assignee.login)) {
                         members[assignee.login]++;
                     }
                 }
@@ -8402,10 +8402,12 @@ function run() {
 function validateIssue(issue, target) {
     // check issue state, issue must be 'open'
     if (issue.state !== 'open') {
+        core.info('issue closed. Skipping');
         return false;
     }
     // check issue type
     if (target.toLowerCase() === 'both') {
+        core.info('RETURNING TRUE BITCHES');
         return true;
     }
     else if (issue.pull_request && target.toLowerCase() === 'pull_requests') {
@@ -8415,6 +8417,7 @@ function validateIssue(issue, target) {
         return true;
     }
     else {
+        core.info("WHAT THE HELL");
         return false;
     }
 }
