@@ -8369,7 +8369,7 @@ function run() {
                     core.info("VALUE IS: " + val);
                     if (val !== undefined) {
                         core.info('WHAT THE FUCK HOLLY SHIT');
-                        members.set(assignee.login, val++);
+                        members.set(assignee.login, ++val);
                     }
                 }
             }
