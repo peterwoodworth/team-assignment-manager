@@ -8371,7 +8371,7 @@ function run() {
         // get number of issues/PRs assigned per team member
         const issueData = yield octokit.rest.issues.listForRepo({
             owner: github.context.repo.owner,
-            repo: github.context.repo.repo
+            repo: github.context.repo.repo,
         });
         for (const issue of issueData.data) {
             if (!validateIssue(issue, target)) {
@@ -8402,7 +8402,7 @@ function run() {
             }
         });
         if (winner !== '') {
-            core.info("Assignee: " + winner);
+            core.info('Assignee: ' + winner);
             yield octokit.rest.issues.addAssignees({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,

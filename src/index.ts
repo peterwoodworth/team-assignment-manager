@@ -35,7 +35,7 @@ async function run() {
   // get number of issues/PRs assigned per team member
   const issueData = await octokit.rest.issues.listForRepo({
     owner: github.context.repo.owner,
-    repo: github.context.repo.repo
+    repo: github.context.repo.repo,
   });
   for (const issue of issueData.data) {
     if (!validateIssue(issue, target)) {
@@ -67,7 +67,7 @@ async function run() {
   });
 
   if (winner !== '') {
-    core.info("Assignee: " + winner);
+    core.info('Assignee: ' + winner);
     await octokit.rest.issues.addAssignees({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
