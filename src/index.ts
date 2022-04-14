@@ -29,7 +29,9 @@ async function run() {
     if (issue.assignees) {
       for (const assignee of issue.assignees) {
         let val = members.get(assignee.login);
+        core.info("VALUE IS: " + val);
         if (val !== undefined) {
+          core.info('WHAT THE FUCK HOLLY SHIT')
           members.set(assignee.login, val++);
         }
       }
@@ -40,6 +42,8 @@ async function run() {
   let winner = '';
   let low: number;
   members.forEach((value: number, key: string) => {
+    core.info(key);
+    core.info(value.toString());
     if (winner === '') {
       low = value;
       winner = key;
