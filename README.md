@@ -24,3 +24,23 @@ Whoever from the given Github team has the fewest number of currently assigned i
   The token must have read:org permission, so the default github token for the repo will not work.
 
   *Required*
+
+# Example
+
+```yaml
+name: "Assigns members from team repo-dev to PRs"
+on:
+ pull_request_target:
+    types: [opened]
+
+jobs:
+  team-assignment-manager:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: peterwoodworth/team-assignment-manager@main
+        with:
+          github-token: "${{ secrets.MY_PAT }}"
+          team: "repo-dev"
+          core-team: "repo-team"
+          target: "pull_requests"
+```
