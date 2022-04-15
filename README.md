@@ -1,5 +1,6 @@
 # team-assignment-manager
 Assigns a member from a Github team to issues
+
 Whoever has the fewest number of currently assigned issues/PRs from the team will be assigned to the issue when this action is ran
 
 ## Inputs
