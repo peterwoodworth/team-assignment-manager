@@ -10,10 +10,6 @@ inputs:
   exempt-team:
     description: "Do not assign users to issues or PRs submitted by members of this team"
     required: false
-  target:
-    description: "Whether to count `issues`, `pull_requests`, or `both` when determining current assignee count of open issues"
-    required: false
-    default: "both"
 
 runs:
   using: "node12"

@@ -15,11 +15,6 @@ Whoever from the given Github team has the fewest number of currently assigned i
 
   *default: does not check submitter*
 
-## target
-  Select whether to count assignees from `issues`, `pull_requests`, or `both`
-
-  *default: both*
-
 ## github-token
   The token must have read:org permission, so the default github token for the repo will not work.
 
@@ -41,6 +36,5 @@ jobs:
         with:
           github-token: "${{ secrets.MY_PAT }}"
           team: "repo-dev"
-          core-team: "repo-team"
-          target: "pull_requests"
+          exempt-team: "repo-team"
 ```

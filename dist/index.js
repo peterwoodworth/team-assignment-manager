@@ -8344,8 +8344,20 @@ function run() {
         const token = core.getInput('github-token');
         const team = core.getInput('team');
         const exemptTeam = core.getInput('exempt-team', { required: false });
-        const target = core.getInput('target');
         const octokit = github.getOctokit(token);
+        // set issue type to count
+        const thisIssueData = yield octokit.rest.issues.get({
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            issue_number: github.context.issue.number,
+        });
+        let target = '';
+        if (thisIssueData.data.pull_request) {
+            target = 'pull_requests';
+        }
+        else {
+            target = 'issues';
+        }
         // Check if issue was submitted by exempt team member
         if (exemptTeam) {
             const exemptMemberData = yield octokit.rest.teams.listMembersInOrg({
@@ -8418,10 +8430,7 @@ function validateIssue(issue, target) {
         return false;
     }
     // check issue type
-    if (target.toLowerCase() === 'both') {
-        return true;
-    }
-    else if (issue.pull_request && target.toLowerCase() === 'pull_requests') {
+    if (issue.pull_request && target.toLowerCase() === 'pull_requests') {
         return true;
     }
     else if (!issue.pull_request && target.toLowerCase() === 'issues') {
