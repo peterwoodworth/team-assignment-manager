@@ -8,7 +8,7 @@ Whoever has the fewest number of currently assigned issues/PRs from the team wil
 The team to assign to issues / PRs
 **Required**
 
-### core-team
+### exempt-team
 If the issue / PR was submitted by someone from this team, do not assign anyone to the issue
 **default: does not check submitter**
 

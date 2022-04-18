@@ -4,19 +4,19 @@ import * as github from '@actions/github';
 async function run() {
   const token = core.getInput('github-token');
   const team = core.getInput('team');
-  const coreTeam = core.getInput('core-team', { required: false });
+  const exemptTeam = core.getInput('exempt-team', { required: false });
   const target = core.getInput('target');
   const octokit = github.getOctokit(token);
 
-  // Check if issue was submitted by core team member
-  if (coreTeam) {
-    const coreMemberData = await octokit.rest.teams.listMembersInOrg({
+  // Check if issue was submitted by exempt team member
+  if (exemptTeam) {
+    const exemptMemberData = await octokit.rest.teams.listMembersInOrg({
       org: github.context.repo.owner,
-      team_slug: coreTeam,
+      team_slug: exemptTeam,
     });
-    for (const coreMember of coreMemberData.data) {
-      if (github.context.actor === coreMember.login) {
-        core.info('Issue was submitted by core team member. Exiting successfully.');
+    for (const exemptMember of exemptMemberData.data) {
+      if (github.context.actor === exemptMember.login) {
+        core.info('Issue was submitted by exempt team member. Exiting successfully.');
         return;
       }
     }
