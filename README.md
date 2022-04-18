@@ -1,20 +1,46 @@
 # team-assignment-manager
-Assigns a member from a Github team to issues
-Whoever has the fewest number of currently assigned issues/PRs from the team will be assigned to the issue when this action is ran
+Automatically assigns a member from a Github team to issues / PRs
 
-## Inputs
+Whoever from the given Github team has the fewest number of currently assigned issues / PRs from the team will be assigned to the issue when this action is ran
 
-### team
-The team to assign to issues / PRs
-**Required**
+# Inputs
 
-### exempt-team
-If the issue / PR was submitted by someone from this team, do not assign anyone to the issue
-**default: does not check submitter**
+## team
+  The team to assign to issues / PRs
 
-### target
-Select whether to count assignees from `issues`, `pull_requests`, or `both`
-**default: both**
+  *Required*
 
-### github-token
-The token must have read:org permission, so the default github token for the repo will not work.
+## exempt-team
+  If the issue / PR was submitted by someone from this team, do not assign anyone to the issue
+
+  *default: does not check submitter*
+
+## target
+  Select whether to count assignees from `issues`, `pull_requests`, or `both`
+
+  *default: both*
+
+## github-token
+  The token must have read:org permission, so the default github token for the repo will not work.
+
+  *Required*
+
+# Example
+
+```yaml
+name: "Assigns members from team repo-dev to PRs"
+on:
+ pull_request_target:
+    types: [opened]
+
+jobs:
+  team-assignment-manager:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: peterwoodworth/team-assignment-manager@main
+        with:
+          github-token: "${{ secrets.MY_PAT }}"
+          team: "repo-dev"
+          core-team: "repo-team"
+          target: "pull_requests"
+```
