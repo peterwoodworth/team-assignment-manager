@@ -8345,19 +8345,6 @@ function run() {
         const team = core.getInput('team');
         const exemptTeam = core.getInput('exempt-team', { required: false });
         const octokit = github.getOctokit(token);
-        // set issue type to count
-        const thisIssueData = yield octokit.rest.issues.get({
-            owner: github.context.repo.owner,
-            repo: github.context.repo.repo,
-            issue_number: github.context.issue.number,
-        });
-        let target = '';
-        if (thisIssueData.data.pull_request) {
-            target = 'pull_requests';
-        }
-        else {
-            target = 'issues';
-        }
         // Check if issue was submitted by exempt team member
         if (exemptTeam) {
             const exemptMemberData = yield octokit.rest.teams.listMembersInOrg({
@@ -8371,6 +8358,19 @@ function run() {
                 }
             }
         }
+        // set issue type to count
+        const thisIssueData = yield octokit.rest.issues.get({
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            issue_number: github.context.issue.number,
+        });
+        let target = '';
+        if (thisIssueData.data.pull_request) {
+            target = 'pull_requests';
+        }
+        else {
+            target = 'issues';
+        }
         // get list of members on team
         const memberData = yield octokit.rest.teams.listMembersInOrg({
             org: github.context.repo.owner,
@@ -8381,22 +8381,20 @@ function run() {
             members.set(member.login, 0);
         }
         // get number of issues/PRs assigned per team member
-        const issueData = yield octokit.rest.issues.listForRepo({
-            owner: github.context.repo.owner,
-            repo: github.context.repo.repo,
-        });
-        for (const issue of issueData.data) {
-            if (!validateIssue(issue, target)) {
-                continue;
+        for (const [key, value] of members) {
+            const { data } = yield octokit.rest.issues.listForRepo({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                assignee: key,
+                per_page: 100,
+            });
+            let count = 0;
+            for (const issue of data) {
+                if (validateIssue(issue, target))
+                    ++count;
             }
-            if (issue.assignees) {
-                for (const assignee of issue.assignees) {
-                    let val = members.get(assignee.login);
-                    if (val !== undefined) {
-                        members.set(assignee.login, ++val);
-                    }
-                }
-            }
+            core.info(key + ' has ' + count.toString() + ' ' + target + ' assigned to them.');
+            members.set(key, count);
         }
         // determine team member with fewest assigned issues/PRs
         let winner = '';
