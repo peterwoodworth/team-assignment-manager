@@ -56,6 +56,7 @@ async function run() {
     for (const issue of data) {
       if (validateIssue(issue, target)) ++count;
     }
+    core.info(key + count.toString());
     members.set(key, count);
   });
 

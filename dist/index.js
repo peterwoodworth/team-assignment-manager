@@ -8393,6 +8393,7 @@ function run() {
                 if (validateIssue(issue, target))
                     ++count;
             }
+            core.info(key + count.toString());
             members.set(key, count);
         }));
         // determine team member with fewest assigned issues/PRs
