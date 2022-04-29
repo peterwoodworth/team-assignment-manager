@@ -12,7 +12,7 @@ async function run() {
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     issue_number: github.context.issue.number,
-  })
+  });
   let target = '';
   if (thisIssueData.data.pull_request) {
     target = 'pull_requests';
@@ -45,23 +45,18 @@ async function run() {
   }
 
   // get number of issues/PRs assigned per team member
-  const issueData = await octokit.rest.issues.listForRepo({
-    owner: github.context.repo.owner,
-    repo: github.context.repo.repo,
+  members.forEach(async (value: number, key: string) => {
+    const { data } = await octokit.rest.issues.listForRepo({
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      assignee: key
+    });
+    let count: number = 0;
+    for (const issue of data) {
+      if (validateIssue(issue, target)) ++count;
+    }
+    members.set(key, count);
   });
-  for (const issue of issueData.data) {
-    if (!validateIssue(issue, target)) {
-      continue;
-    }
-    if (issue.assignees) {
-      for (const assignee of issue.assignees) {
-        let val = members.get(assignee.login);
-        if (val !== undefined) {
-          members.set(assignee.login, ++val);
-        }
-      }
-    }
-  }
 
   // determine team member with fewest assigned issues/PRs
   let winner = '';

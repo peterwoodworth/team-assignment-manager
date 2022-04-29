@@ -8381,23 +8381,19 @@ function run() {
             members.set(member.login, 0);
         }
         // get number of issues/PRs assigned per team member
-        const issueData = yield octokit.rest.issues.listForRepo({
-            owner: github.context.repo.owner,
-            repo: github.context.repo.repo,
-        });
-        for (const issue of issueData.data) {
-            if (!validateIssue(issue, target)) {
-                continue;
+        members.forEach((value, key) => __awaiter(this, void 0, void 0, function* () {
+            const { data } = yield octokit.rest.issues.listForRepo({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                assignee: key
+            });
+            let count = 0;
+            for (const issue of data) {
+                if (validateIssue(issue, target))
+                    ++count;
             }
-            if (issue.assignees) {
-                for (const assignee of issue.assignees) {
-                    let val = members.get(assignee.login);
-                    if (val !== undefined) {
-                        members.set(assignee.login, ++val);
-                    }
-                }
-            }
-        }
+            members.set(key, count);
+        }));
         // determine team member with fewest assigned issues/PRs
         let winner = '';
         let low;
