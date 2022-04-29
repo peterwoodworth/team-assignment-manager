@@ -8385,7 +8385,8 @@ function run() {
             const { data } = yield octokit.rest.issues.listForRepo({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
-                assignee: key
+                assignee: key,
+                per_page: 100,
             });
             let count = 0;
             for (const issue of data) {
