@@ -45,7 +45,7 @@ async function run() {
   }
 
   // get number of issues/PRs assigned per team member
-  members.forEach(async (value: number, key: string) => {
+  await members.forEach(async (value: number, key: string) => {
     const { data } = await octokit.rest.issues.listForRepo({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
@@ -56,7 +56,7 @@ async function run() {
     for (const issue of data) {
       if (validateIssue(issue, target)) ++count;
     }
-    core.info(key + count.toString());
+    core.info(key + ' ' + count.toString());
     members.set(key, count);
   });
 
